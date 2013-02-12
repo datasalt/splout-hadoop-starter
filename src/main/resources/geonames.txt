@@ -1,0 +1,6 @@
+california	California
+California	California
+usa	United States of America
+USA	United States of America
+U.S.A.	United States of America
+United States of America	United States of America

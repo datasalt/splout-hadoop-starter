@@ -1,0 +1,130 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.datasalt.splout</groupId>
+	<artifactId>splout-hadoop-starter</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>splout-starter</name>
+	<url>https://github.com/datasalt/splout-hadoop-starter</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+
+		<!-- Splout dependencies: splout-hadoop API -->
+		<dependency>
+			<groupId>com.splout.db</groupId>
+			<artifactId>splout-hadoop</artifactId>
+			<version>0.2.2-SNAPSHOT</version>
+		</dependency>
+		<!-- Splout dependencies: native SQLite libs, etc -->
+		<dependency>
+			<groupId>com.splout.db</groupId>
+			<artifactId>splout-resources</artifactId>
+			<version>0.2.1</version>
+		</dependency>
+		
+		<!-- Add a explicit slf4j binding -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.2</version>
+		</dependency>
+		
+		<!-- Specify a compatible Hadoop distro -->
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-core</artifactId>
+			<version>0.20.2</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+		    <!-- 
+		    bind the maven-assembly-plugin to the package phase
+		    this will create a jar file without the storm dependencies
+		    suitable for deployment to a cluster.
+		     -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+
+			</plugin>
+			
+			<!-- This plugin decompresses the splout-resources (native SQLite libs, etc) -->
+			<!-- It makes them available in the target/maven-shared-archive-resources folder -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-remote-resources-plugin</artifactId>
+				<version>1.4</version>
+				<configuration>
+					<resourceBundles>
+						<resourceBundle>com.splout.db:splout-resources:0.2.1</resourceBundle>
+					</resourceBundles>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			
+			<!-- This plugin's purpose is two fold. On one hand, it creates a hadoop-ready JAR -->
+			<!-- On the other hand, it creates a "distribution" .tar.gz that contains the native libraries -->
+			<!-- The native libraries are copied to "./native" folder. -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2.1</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/hadoop.xml</descriptor>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
+					<archive>
+						<manifest>
+							<mainClass>com.datasalt.splout.starter.Driver</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
