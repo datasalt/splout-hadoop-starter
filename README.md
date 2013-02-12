@@ -12,7 +12,7 @@ Here's how in Eclipse:
 	mvn eclipse:eclipse
 	Run Configurations -> ... -> JRE -> Installed JREs... -> Click -> Edit ... -> Default VM Arguments: -Djava.library.path=target/maven-shared-archive-resources/
 	
-IMPORT: For executing the examples you should have at least a QNode and DNode running in your system.
+IMPORTANT: For executing the examples you should have at least a QNode and DNode running in your system.
 
 For running the example locally, just execute "GenerateTablespace" with no args first and "DeployTablespace" with no args afterwards.
 
