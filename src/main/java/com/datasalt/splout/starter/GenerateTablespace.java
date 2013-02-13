@@ -111,10 +111,7 @@ public class GenerateTablespace implements Tool {
 		if(!FileSystem.getLocal(hadoopConf).equals(fS)) {
 			// When launching the app, the "native" folder must contain the SQLite native libraries
 			// This is achieved by the maven assembly task.
-			File nativeLibs = new File("native");
-			if(nativeLibs.exists()) {
-				SploutHadoopConfiguration.addSQLite4JavaNativeLibsToDC(hadoopConf);
-			}
+			SploutHadoopConfiguration.addSQLite4JavaNativeLibsToDC(hadoopConf);
 		}
 
 		// delete indexed files if they already exist
