@@ -12,7 +12,7 @@ Here's how in Eclipse:
 	mvn eclipse:eclipse
 	Run Configurations -> ... -> JRE -> Installed JREs... -> Click -> Edit ... -> Default VM Arguments: -Djava.library.path=target/maven-shared-archive-resources/
 	
-IMPORTANT: For executing the examples you should have at least a QNode and DNode running in your system.
+IMPORTANT: For executing the examples you should have at least a QNode and DNode running in your system (see Splout SQL's Getting started: http://sploutsql.com/gettingstarted.html).
 
 For running the example locally, just execute "GenerateTablespace" with no args first and "DeployTablespace" with no args afterwards.
 
@@ -33,3 +33,23 @@ You can check that everything went fine by issuing the following queries providi
 
 	SELECT * FROM geonames;
 	SELECT * FROM hashtags;
+	
+The example
+===========
+
+The example is very simple and it just indexes a small file with Twitter hashtag counts per day, partitioning it by hashtag.
+This means you can do queries like: 
+
+	(key = 'california')
+	SELECT * FROM hashtags WHERE hashtag = 'california';
+	 
+It also indexes a toy database of "geonames". So you can check whether some hashtag is an alternate name
+for a location:
+
+	(key = 'california')
+	SELECT * FROM geonames WHERE altname = 'california';
+	
+Indeed, you can query in each partition which hashtags correspond to a geo location:
+
+	(for any partition key)
+	SELECT * FROM hashtags, geonames WHERE altname = hashtag;  

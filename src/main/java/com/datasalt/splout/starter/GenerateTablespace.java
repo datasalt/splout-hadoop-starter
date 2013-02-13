@@ -77,7 +77,7 @@ public class GenerateTablespace implements Tool {
 		    NO_QUOTE_CHARACTER, NO_ESCAPE_CHARACTER, false, false, null);
 		// create a B-Tree on hashtag+date
 		hashTagsTableBuilder.createIndex("hashtag", "date");
-		// partitioned table by hashtag
+		// partitioned table by "hashtag"
 		hashTagsTableBuilder.partitionBy("hashtag");
 
 		Table hashTagsTable = hashTagsTableBuilder.build();
@@ -86,6 +86,7 @@ public class GenerateTablespace implements Tool {
 		// standard text file with tab. as separation and no quotes
 		geonamesTableBuilder.addCSVTextFile("src/main/resources/geonames.txt");
 		// this table will be replicated in each partition
+		// (this is just for illustrative purposes, we could also partition it by "altname".)
 		geonamesTableBuilder.replicateToAll();
 
 		Table geonamesTable = geonamesTableBuilder.build();
