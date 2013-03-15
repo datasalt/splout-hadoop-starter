@@ -19,13 +19,13 @@
 		<dependency>
 			<groupId>com.splout.db</groupId>
 			<artifactId>splout-hadoop</artifactId>
-			<version>0.2.2-SNAPSHOT</version>
+			<version>0.2.2</version>
 		</dependency>
 		<!-- Splout dependencies: native SQLite libs, etc -->
 		<dependency>
 			<groupId>com.splout.db</groupId>
 			<artifactId>splout-resources</artifactId>
-			<version>0.2.1</version>
+			<version>0.2.2</version>
 		</dependency>
 		
 		<!-- Add a explicit slf4j binding -->
